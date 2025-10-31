@@ -4,7 +4,6 @@
 
 #define ruma sichi
 
-
 #define SensorServoPin 9
 #define EndBTN 22
 #define resetLED 13
@@ -28,10 +27,6 @@ Servo sensorServo;
 #define add_front 0x00
 #define add_back 0x00
 
-#define sht_right 2
-#define sht_left 3
-#define sht_front 4
-#define sht_back 5
 
 Adafruit_VL53L0X SensorRight = Adafruit_VL53L0X();
 Adafruit_VL53L0X SensorLeft = Adafruit_VL53L0X();
@@ -92,15 +87,7 @@ void setup() {
   Serial1.println("right, left, front, back, degree, forcex, forcey, forcez");
 
   Wire.begin();
-
-  // Setup Page - Ranging Modules
-  pinMode(sht_right, OUTPUT); pinMode(sht_left, OUTPUT); pinMode(sht_front, OUTPUT); pinMode(sht_back, OUTPUT); 
-    // all reset
-    digitalWrite(sht_right, LOW); digitalWrite(sht_left, LOW); digitalWrite(sht_front, LOW); digitalWrite(sht_back, LOW);
-    delay(10);
-    // make it all work
-    digitalWrite(sht_right, HIGH); digitalWrite(sht_left, HIGH); digitalWrite(sht_front, HIGH); digitalWrite(sht_back, HIGH);
-
+  *
   if(!SensorRight.begin(add_right)) {
     Serial1.println("Failed to Load East");
     while(1);
@@ -142,7 +129,7 @@ void loop() {
   String out = String(rightPrcd) + "," + String(leftPrcd) + "," + String(frontPrcd) + "," + String(backPrcd) + ","
     + String(servoDegree) + "," // Servo Value
     + String(cForce.x)+ "," + String(cForce.y) + "," + String(cForce.z); // 가속도
-  Serial1.println(out);
+  Serial1.println(out); 
 
   // obstacle utjugo system
   if(frontPrcd <= 100){
@@ -162,7 +149,7 @@ void loop() {
   }
 }
 
-int ServoMove(short degree) {
+int ServoMove(short degree) {AAAA3
   if(degree == 0 || (servoDegree + degree) > 90 || (servoDegree + degree) < -90)
     return 1;
   else {
