@@ -38,12 +38,20 @@ VL53L0X_RangingMeasurementData_t rightv, leftv, frontv, backv;
 short rightPrcd = 0, leftPrcd = 0, frontPrcd = 0, backPrcd = 0;
 
 short servoDegree = 0;
+short targetedDirection = 1; 
+/*
+  1 is positive move
+  -1 is netagive move
+  0 is 0
+*/
 
+short ServoMoveCaul(short currentDegree);
 int ServoMove(short degree);
 void resetServo();
 void readRange();
 void endSystem();
 void readForce();
+
 typedef struct Forces {
   short x;
   short y;
@@ -87,7 +95,7 @@ void setup() {
   Serial1.println("right, left, front, back, degree, forcex, forcey, forcez");
 
   Wire.begin();
-  *
+  
   if(!SensorRight.begin(add_right)) {
     Serial1.println("Failed to Load East");
     while(1);
@@ -142,14 +150,36 @@ void loop() {
     motor().steerLeft();
     delay(/*declared seconds \TIMES 2*/ stMS * 2);
     }
+    ServoMove(ServoMoveCaul(servoDegree));
   }
-
+  
   if(digitalRead(EndBTN) == 1) {
     endSystem();
   }
 }
+short ServoMoveCaul(short currentDegree) {
+  if(currentDegree == 90 || currentDegree == -90) {
+    switch(targetedDirection) {
+      case 0:
+        targetedDirection = 0;
+        return 0;
+        break;
+      case 1:
+        targetedDirection = -1;
+        break;
+      case -1:
+        targetedDirection = 1;
+        break;
+    }
+    return 0;
+  }
+  switch(targetedDirection) {
+    case 0:
+      targetedDirection = 1;
+  }
+}
 
-int ServoMove(short degree) {AAAA3
+int ServoMove(short degree) {
   if(degree == 0 || (servoDegree + degree) > 90 || (servoDegree + degree) < -90)
     return 1;
   else {
