@@ -45,7 +45,7 @@ short targetedDirection = 1;
   0 is 0
 */
 
-short ServoMoveCaul(short currentDegree);
+short ServoMoveCaul(short currentDegree, bool byPass = false);
 int ServoMove(short degree);
 void resetServo();
 void readRange();
@@ -157,26 +157,28 @@ void loop() {
     endSystem();
   }
 }
-short ServoMoveCaul(short currentDegree) {
+short ServoMoveCaul(short currentDegree, bool byPass = false) {
+  if(byPass == true) {
+    goto mreturn;
+  }
   if(currentDegree == 90 || currentDegree == -90) {
+    targetedDirection *= -1;
+    return ServoMoveCaul(currentDegree, true);
+  }
+  if(byPass == false) {
+  mreturn:
     switch(targetedDirection) {
-      case 0:
-        targetedDirection = 0;
-        return 0;
+      case -1:
+        return -5;
         break;
       case 1:
-        targetedDirection = -1;
+        return 5;
         break;
-      case -1:
-        targetedDirection = 1;
-        break;
+      default:
+        endSystem();
     }
-    return 0;
   }
-  switch(targetedDirection) {
-    case 0:
-      targetedDirection = 1;
-  }
+  
 }
 
 int ServoMove(short degree) {
