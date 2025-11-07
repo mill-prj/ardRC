@@ -2,6 +2,8 @@
 #include <Servo.h>
 #include "Adafruit_VL53L0X.h"
 
+#define ruma sichi
+
 #define SensorServoPin 9
 #define EndBTN 22
 #define resetLED 13
