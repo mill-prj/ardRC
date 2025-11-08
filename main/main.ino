@@ -194,6 +194,27 @@ void loop() {
   // 서보모터 움직임 업데이트 (5ms 간격)
   moveServo();
   
+  String in = Serial1.readString();
+  if(in == "" ||  in == NULL) {
+    
+  } else {
+    if (in == "F") {
+      motor().moveF(200);
+    } 
+    else if (in == "B") {
+      motor().moveB(200);
+    } 
+    else if (in == "L") {
+      motor().steerLeft();
+    } 
+    else if (in == "R") {
+      motor().SteerRight();
+    } 
+    else {
+  
+    }
+
+  }
   // 데이터 수집 및 전송 (10ms 간격 = 초당 100회)
   if (currentMillis - lastDataUpdate >= DATA_INTERVAL) {
     readRange();  // 거리 센서 읽기
@@ -203,6 +224,7 @@ void loop() {
       + String(servoDegree) + "," // Servo Value
       + String(cForce.x)+ "," + String(cForce.y) + "," + String(cForce.z); // 가속도
     Serial1.println(out);
+    Serial.println(out);
     
     lastDataUpdate = currentMillis;
   }
