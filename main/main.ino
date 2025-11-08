@@ -212,8 +212,8 @@ void loop() {
     else if (in == 'R') {
       motor().SteerRight();
     } 
-    else {
-  
+    else if(in == 'S') {
+      motor().allStop();
     }
 
   }
