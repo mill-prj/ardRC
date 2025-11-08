@@ -119,6 +119,7 @@ bool initVL53L0X(Adafruit_VL53L0X &sensor, int xshutPin, uint8_t newAddress, con
 }
 
 void setup() {
+
   Serial.begin(9600);   // Computer Serial
   Serial1.begin(9600);  // Bluetooth serial
 
@@ -189,25 +190,26 @@ void setup() {
 }
 
 void loop() {
+
   unsigned long currentMillis = millis();
   
   // 서보모터 움직임 업데이트 (5ms 간격)
   moveServo();
   
-  String in = Serial1.readString();
+  char in = Serial1.read();
   if(in == "" ||  in == NULL) {
     
   } else {
-    if (in == "F") {
+    if (in == 'F') {
       motor().moveF(200);
     } 
-    else if (in == "B") {
+    else if (in == 'B') {
       motor().moveB(200);
     } 
-    else if (in == "L") {
+    else if (in == 'L') {
       motor().steerLeft();
     } 
-    else if (in == "R") {
+    else if (in == 'R') {
       motor().SteerRight();
     } 
     else {
@@ -235,6 +237,7 @@ void loop() {
   if(digitalRead(EndBTN) == 1) {
     endSystem();
   }
+
 }
 void moveServo() {
   unsigned long currentMillis = millis();
